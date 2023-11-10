@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>COVID-19 Historical Data</title>
+  <style>
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      width: 300px;
+      background-color: #acf1ac;
+      opacity: 0.7;
+      border: 1px solid #5c0f39;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    body{
+        background-image: url('https://images.pexels.com/photos/3992933/pexels-photo-3992933.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+        background-repeat:no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        padding-top: 20px;
+        background-size: 70%;    
+    }
+    .header{
+      color: rgb(3, 13, 145);
+      font-weight: bold;
+      text-align: center;  
+      padding: 10px 16px;                
+    }    
+ 
+  </style>
+</head>
+<body>
+  <div class="header" id="myHeader">
+    <h2>History of Covid-19</h2>
+  </div>
+  
+  <div class="container"></div>
+
+  <script>
+    const container = document.querySelector('.container');
+
+    // Fetch data from the API
+    fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=all')
+      .then(response => response.json())
+      .then(data => {
+        // Get the historical data object
+        const historicalData = data['cases'];
+
+        // Create and append cards for each data point
+        for (const date in historicalData) {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const dateElement = document.createElement('h3');
+          dateElement.textContent = `Date: ${date}`;
+          card.appendChild(dateElement);
+
+          const casesElement = document.createElement('p');
+          casesElement.textContent = `Cases: ${historicalData[date]}`;
+          card.appendChild(casesElement);
+          container.appendChild(card);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>
